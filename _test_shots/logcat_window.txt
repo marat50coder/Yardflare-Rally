@@ -1,0 +1,594 @@
+﻿
+--------- beginning of main
+07-23 12:24:50.035 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:24:50.036 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:24:50.107 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:50.283 I/GenericSource(  691): readBuffer(Audio) mode = 0, EOS
+07-23 12:24:50.335 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 9952 (msec), at state 5
+07-23 12:24:50.358 I/SurfaceFlinger(  590): SFWD update time=584288181789466
+07-23 12:24:50.358 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:50.559 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:50.682 D/BatteryDump(  554): wait_for_battery_event : occurred : change@/devices/virtual/xt_idletimer/timer
+s 
+07-23 12:24:50.682 D/ConnectivityService( 1008): reportNetworkActive, notify 1 listeners
+07-23 12:24:50.760 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:50.938 D/InputReader( 1008): Btn_touch(9): value=1 when=584288.761752
+07-23 12:24:50.939 I/InputReader( 1008): Touch event's action is 0x0 (id=4, t=0) [pCnt=1, s=0.30235 ] when=584288.76175
+2
+07-23 12:24:50.940 I/InputDispatcher( 1008): Delivering touch to (2052): action: 0x4, f=0x0, d=0, 'e572d41', t=1 
+07-23 12:24:50.940 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x0, f=0x0, d=0, '3a45779', t=1 
+07-23 12:24:50.940 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 0
+07-23 12:24:50.940 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 580528877 caller: com.android.server.wm.Syst
+emGesturesPointerEventListener.onPointerEvent:179 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 android.
+view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:24:50.941 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 580528877 caller: com.android.server.wm.Syst
+emPerformancePointerEventListener.onPointerEvent:89 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 androi
+d.view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:24:50.941 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:50.941 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:50.942 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:50.942 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:50.948 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 213700875
+07-23 12:24:50.948 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 213700875
+07-23 12:24:50.960 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:51.014 D/InputReader( 1008): Btn_touch(9): value=0 when=584288.837624
+07-23 12:24:51.014 I/InputReader( 1008): Touch event's action is 0x1 (id=4, t=0) [pCnt=1, s=] when=584288.837624
+07-23 12:24:51.015 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x1, f=0x0, d=0, '3a45779', t=1 
+07-23 12:24:51.035 I/GenericSource(  691): readBuffer(Audio) mode = 0, EOS
+07-23 12:24:51.140 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 1
+07-23 12:24:51.161 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:51.240 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:24:51.241 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:24:51.412 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:51.416 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 11034 (msec), at state 5
+07-23 12:24:51.647 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:51.786 I/NuPlayerRenderer(  691): onQueueEOS audio finalResult : -1011
+07-23 12:24:51.847 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:52.065 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:52.168 D/InputReader( 1008): Btn_touch(9): value=1 when=584289.991694
+07-23 12:24:52.168 I/InputReader( 1008): Touch event's action is 0x0 (id=4, t=0) [pCnt=1, s=0.30236 ] when=584289.99169
+4
+07-23 12:24:52.169 I/InputDispatcher( 1008): Delivering touch to (2052): action: 0x4, f=0x0, d=0, 'e572d41', t=1 
+07-23 12:24:52.169 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x0, f=0x0, d=0, '3a45779', t=1 
+07-23 12:24:52.170 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 400983059 caller: com.android.server.wm.Syst
+emGesturesPointerEventListener.onPointerEvent:179 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 android.
+view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:24:52.170 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 400983059 caller: com.android.server.wm.Syst
+emPerformancePointerEventListener.onPointerEvent:89 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 androi
+d.view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:24:52.171 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:52.171 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:52.172 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:52.172 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:52.178 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 117996790
+07-23 12:24:52.178 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 117996790
+07-23 12:24:52.218 D/InputReader( 1008): Btn_touch(9): value=0 when=584290.041894
+07-23 12:24:52.218 I/InputReader( 1008): Touch event's action is 0x1 (id=4, t=0) [pCnt=1, s=] when=584290.041894
+07-23 12:24:52.219 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x1, f=0x0, d=0, '3a45779', t=1 
+07-23 12:24:52.246 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 0
+07-23 12:24:52.247 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 1
+07-23 12:24:52.266 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:52.470 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:24:52.471 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:24:52.500 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:52.507 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 12125 (msec), at state 5
+07-23 12:24:52.767 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:53.102 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:53.311 I/MediaFocusControl( 1008): abandonAudioFocus() from uid/pid 10700/29812 clientId=android.media.Audi
+oManager@7e45bxyz.luan.audioplayers.player.ModernFocusManager$$ExternalSyntheticLambda0@a71d7c6
+07-23 12:24:53.311 D/MediaFocusControl( 1008): selectFocusStack, uid = 10700, appDevice = 0, device = 2
+07-23 12:24:53.312 V/AS.AudioService( 1008): setMode(mode=0, pid=29812, uid=10700, caller=com.yardflare.rallygame)
+07-23 12:24:53.312 W/AS.AudioService( 1008): Audio Settings Permission Denial: setMode() from pid=29812, uid=10700
+07-23 12:24:53.312 W/AS.AudioService( 1008): Audio Settings Permission Denial: setSpeakerphoneOn() from pid=29812, uid=
+10700
+07-23 12:24:53.320 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+--------- beginning of system
+07-23 12:24:53.382 D/io_stats(  459): !@   8,0 r 11938672 455590076 w 9476692 505697612 d 0 0 f 0 0 iot 7119208 0 th 0 
+0 0 pt 0 inp 0 0 584291.205
+07-23 12:24:53.537 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:53.539 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 13157 (msec), at state 5
+07-23 12:24:53.641 D/InputReader( 1008): Btn_touch(9): value=1 when=584291.464307
+07-23 12:24:53.641 I/InputReader( 1008): Touch event's action is 0x0 (id=4, t=0) [pCnt=1, s=0.30237 ] when=584291.46430
+7
+07-23 12:24:53.642 I/InputDispatcher( 1008): Delivering touch to (2052): action: 0x4, f=0x0, d=0, 'e572d41', t=1 
+07-23 12:24:53.642 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x0, f=0x0, d=0, '3a45779', t=1 
+07-23 12:24:53.643 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 583231271 caller: com.android.server.wm.Syst
+emGesturesPointerEventListener.onPointerEvent:179 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 android.
+view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:24:53.643 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 583231271 caller: com.android.server.wm.Syst
+emPerformancePointerEventListener.onPointerEvent:89 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 androi
+d.view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:24:53.644 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:53.644 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:53.645 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:53.645 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:53.649 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 405468066
+07-23 12:24:53.650 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 405468066
+07-23 12:24:53.741 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 0
+07-23 12:24:53.742 D/PowerManagerService( 1008): [api] userActivityFromNative : 970 (event: 2 flags: 0 displayId: 0) ev
+entTime = 584291564
+07-23 12:24:53.755 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:53.843 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:53.843 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:53.843 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:53.843 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:53.944 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:53.944 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:53.944 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:53.944 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:53.989 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:54.144 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:54.144 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:54.145 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:54.145 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:54.223 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:54.341 I/L0      ( 3148): limitCPUFreq:: freq = 1820000
+07-23 12:24:54.341 I/SemDvfsHyPerManager( 3148): acquire hyper - SIOP_ARM_MAX/3148@2, type = 301993986
+07-23 12:24:54.342 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 4962827  [3148 / 2]    HINT :      
+list : [CPUMaxFreq / 1820000] 
+07-23 12:24:54.345 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:54.345 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:54.345 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:54.345 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:54.440 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:54.446 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:54.446 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:54.446 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:54.446 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:54.647 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:54.647 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:54.647 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:54.647 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:54.657 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 14275 (msec), at state 5
+07-23 12:24:54.658 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:54.746 D/PowerManagerService( 1008): [api] userActivityFromNative : 980 (event: 2 flags: 0 displayId: 0) ev
+entTime = 584292568
+07-23 12:24:54.848 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:54.848 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:54.848 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:54.848 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:54.892 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:54.956 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:54.956 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:54.956 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:54.956 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.057 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.057 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.057 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.057 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.127 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:55.257 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.257 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.258 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.258 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.361 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:55.366 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.366 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.366 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.366 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.466 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.466 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.467 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.467 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.612 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:55.667 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.668 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.668 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.668 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.767 D/PowerManagerService( 1008): [api] userActivityFromNative : 990 (event: 2 flags: 0 displayId: 0) ev
+entTime = 584293589
+07-23 12:24:55.794 I/NuPlayerRenderer(  691): [audio] notifyEOS() End of Stream, delayUs : 597808
+07-23 12:24:55.794 V/AudioSink(  691): stop
+07-23 12:24:55.794 D/AudioTrack(  691): stop(2061): called with 352800 frames delivered
+07-23 12:24:55.846 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:55.868 I/SDHMS:C ( 3148): SIOP:: AP:403(470,110) BAT:340(340,0) USB:333(333,0) CHG:400(400,0) PA:393(393,0)
+ WIFI:341(341,0) LRP:336(336,0) LRF:336(336) LRB:334(334) 
+07-23 12:24:55.876 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.876 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.877 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.877 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:55.975 D/BatteryDump(  554): wait_for_battery_event : occurred : change@/devices/platform/battery/power_sup
+ply/battery 
+07-23 12:24:55.989 I/android.hardware.health@2.1-service-samsung(  554): updateLrpSysfs: write: 336
+07-23 12:24:55.993 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:55.993 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:55.993 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:55.993 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:56.058 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 15676 (msec), at state 5
+07-23 12:24:56.064 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:56.094 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:56.094 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:56.094 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:56.095 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:56.297 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:56.297 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:56.298 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:56.298 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:56.299 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:56.392 I/NuPlayerRenderer(  691): [audio] notifyEOS() End of Stream, delayUs : 0
+07-23 12:24:56.392 V/NuPlayer(  691): reached audio EOS
+07-23 12:24:56.392 V/NuPlayerDriver(  691): notifyListener_l(0xe3742290), playback complete, loop setting(0, 1)
+07-23 12:24:56.392 V/NuPlayer(  691): seekToAsync seekTimeUs : 0
+07-23 12:24:56.392 V/AudioSink(  691): start
+07-23 12:24:56.392 D/AudioTrack(  691): setVolume(0.450000, 0.450000) pid : 29812
+07-23 12:24:56.392 I/SAG_VOR_a32(  691): VoiceActivityDetectionInit() Version Samsung VAD v3.0 a32 2020.06.22)
+07-23 12:24:56.393 V/NuPlayer(  691): kWhatSeek seekTimeUs=0 us, mode=0, needNotify=0
+07-23 12:24:56.393 V/NuPlayer(  691): performDecoderFlush audio=1, video=1
+07-23 12:24:56.393 V/NuPlayer(  691): [audio] flushDecoder needShutdown=0
+07-23 12:24:56.393 V/NuPlayer(  691): postponing action mFlushingAudio=1, mFlushingVideo=0
+07-23 12:24:56.393 I/NuPlayerDecoderPassThrough(  691): onFlush, now generation : 10
+07-23 12:24:56.393 I/NuPlayerRenderer(  691): flush audio, notifyComplete 1, shutdown No
+07-23 12:24:56.393 V/MediaPlayerService(  691): [644] notify (211, 0, 0)
+07-23 12:24:56.393 V/MediaPlayerNative(29812): message received msg=211, ext1=0, ext2=0
+07-23 12:24:56.394 I/NuPlayerRenderer(  691): flushing audio
+07-23 12:24:56.394 I/NuPlayerRenderer(  691): onFlush mAudioDrainGeneration : 18
+07-23 12:24:56.394 V/AudioSink(  691): pause
+07-23 12:24:56.395 V/AudioSink(  691): flush
+07-23 12:24:56.396 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:56.396 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:56.396 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:56.396 V/AudioSink(  691): stop
+07-23 12:24:56.396 V/AudioSink(  691): start
+07-23 12:24:56.396 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:56.396 D/AudioTrack(  691): setVolume(0.450000, 0.450000) pid : 29812
+07-23 12:24:56.396 I/SAG_VOR_a32(  691): VoiceActivityDetectionInit() Version Samsung VAD v3.0 a32 2020.06.22)
+07-23 12:24:56.397 V/NuPlayer(  691): renderer audio flush completed.
+07-23 12:24:56.397 D/NuPlayerRenderer(  691): signalTimeDiscontinuity() mHasAudio = 0 , mHasVideo = 0
+07-23 12:24:56.397 V/NuPlayer(  691): decoder audio flush completed
+07-23 12:24:56.397 V/NuPlayer(  691): both audio and video are flushed now.
+07-23 12:24:56.397 V/NuPlayer(  691): performSeek seekTimeUs=0 us (0.00 secs), mode=0
+07-23 12:24:56.406 V/NuPlayer(  691): performResumeDecoders video : 1, audio : 1, needNotify : 0
+07-23 12:24:56.406 I/NuPlayerDecoderPassThrough(  691): onResume
+07-23 12:24:56.407 I/MediaClock(  691): setPlaybackRate rate : 0.000000
+07-23 12:24:56.407 D/AudioTrack(  691): getTimestamp_l(2061): device stall time corrected using current time 5842942307
+92269
+07-23 12:24:56.407 I/NuPlayerRenderer(  691): onDrainAudioQueue() send kWhatPollingAudioStarted audio_out : 0
+07-23 12:24:56.407 I/NuPlayerRenderer(  691): setAudioFirstAnchorTime mAudioFirstAnchorTimeMediaUs : -1, new mediaTimeU
+s : 0
+07-23 12:24:56.407 I/MediaClock(  691): getMediaTime_l - mAnchorTimeRealUs is '-1'
+07-23 12:24:56.407 V/NuPlayer(  691): media rendering started
+07-23 12:24:56.407 V/MediaPlayerService(  691): [644] notify (6, 0, 0)
+07-23 12:24:56.407 V/MediaPlayerNative(29812): message received msg=6, ext1=0, ext2=0
+07-23 12:24:56.433 W/AudioTrack(  691): getTimestamp_l(2061): retrograde timestamp time corrected, 584294249638000 < 58
+4294252089500
+07-23 12:24:56.533 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:56.569 I/NuPlayerRenderer(  691): kWhatPollingAudioStarted clock running played_out : 17728 us, audio_out :
+ 0 us, gap : 17728 us
+07-23 12:24:56.569 I/NuPlayerRenderer(  691): kWhatPollingAudioStarted update nowMediaUs : 0 us
+07-23 12:24:56.569 I/MediaClock(  691): setPlaybackRate rate : 1.000000
+07-23 12:24:56.569 I/MediaClock(  691): setSpeedAjust mSASpeed (0), mMinClockModificationTimeUs (80000)
+07-23 12:24:56.569 V/MediaPlayerService(  691): [644] notify (211, 0, 0)
+07-23 12:24:56.569 V/MediaPlayerService(  691): [644] notify (211, 0, 0)
+07-23 12:24:56.569 V/MediaPlayerNative(29812): message received msg=211, ext1=0, ext2=0
+07-23 12:24:56.585 V/MediaPlayerNative(29812): message received msg=211, ext1=0, ext2=0
+07-23 12:24:56.596 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:56.596 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:56.596 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:56.596 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:56.657 I/MediaClock(  691): updateClock closest gapTimeUs(17837), nowMediaUs(105976), oldMediaUs(88139)
+07-23 12:24:56.784 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:56.796 D/PowerManagerService( 1008): [api] userActivityFromNative : 1000 (event: 2 flags: 0 displayId: 0) e
+ventTime = 584294618
+07-23 12:24:56.797 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:56.797 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:56.797 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:56.797 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:56.897 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:56.897 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:56.897 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:56.898 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.018 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:57.099 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:57.099 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:57.099 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:57.099 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.269 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:57.299 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:57.299 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:57.299 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:57.300 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.399 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:57.399 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:57.400 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:57.400 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.487 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:57.487 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 948 (msec), at state 5
+07-23 12:24:57.600 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:57.600 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:57.601 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:57.601 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.701 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:57.701 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:57.701 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:57.701 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.738 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:57.800 D/PowerManagerService( 1008): [api] userActivityFromNative : 1010 (event: 2 flags: 0 displayId: 0) e
+ventTime = 584295622
+07-23 12:24:57.901 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:57.901 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:57.901 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:57.901 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:57.989 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:58.102 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:58.102 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:58.102 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:58.102 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:58.223 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:58.303 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:58.303 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:58.303 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:58.304 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:58.457 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:58.503 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:58.503 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:58.504 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:58.504 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:58.605 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:58.605 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:58.605 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:58.605 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:58.692 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:58.804 D/PowerManagerService( 1008): [api] userActivityFromNative : 1020 (event: 2 flags: 0 displayId: 0) e
+ventTime = 584296627
+07-23 12:24:58.806 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:58.806 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:58.807 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:58.807 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:58.926 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:59.015 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:59.015 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:59.016 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:59.016 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:59.069 D/NetworkController.WifiSignalController( 2052): notifyListener: visible=true, enabled=true, connect
+ed=true, inetCondition=1, isDefault=true, receivedCR=true, receivedIC=-1, shouldForceHide=false, emptyConnected=false
+07-23 12:24:59.131 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:59.131 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:59.131 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:59.131 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:59.145 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 2606 (msec), at state 5
+07-23 12:24:59.161 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:59.304 I/wpa_supplicant(23885): Heartbeat 11603
+07-23 12:24:59.349 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:59.349 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:59.350 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:59.350 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:59.411 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:59.567 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:59.567 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:59.567 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:59.567 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:59.663 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:24:59.667 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:24:59.667 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:24:59.668 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:24:59.668 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:24:59.674 D/InputReader( 1008): Btn_touch(9): value=0 when=584297.497659
+07-23 12:24:59.674 I/InputReader( 1008): Touch event's action is 0x1 (id=4, t=0) [pCnt=1, s=] when=584297.497659
+07-23 12:24:59.675 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x1, f=0x0, d=0, '3a45779', t=1 
+07-23 12:24:59.899 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 1
+07-23 12:24:59.914 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:00.000 D/SamsungAlarmManager( 1008): Expired : 8
+07-23 12:25:00.000 V/SamsungAlarmManager( 1008): Sending to uid : 1000 L=8b1e212:TIME_TICK alarm=Alarm{ae842b7 type 3 o
+rigWhen 1604618821 whenElapsed 1604618821 android}
+07-23 12:25:00.001 D/SamsungAlarmManager( 1008): setExact (T:3/F:9/AC:false) 20260723T122600 now=1604618821 - CU:1000/C
+P:1008/L:8b1e212:TIME_TICK
+07-23 12:25:00.002 V/SamsungAlarmManager( 1008): setLocked to kernel - W:1604981408 / NW:1604641841, now=1604618822
+07-23 12:25:00.002 V/SamsungAlarmManager( 1008): setLocked to kernel - W:1604981408 / NW:1604641841, now=1604618823
+07-23 12:25:00.003 I/EyeComfortSolutionService( 1008): action  :  android.intent.action.TIME_TICK
+07-23 12:25:00.003 D/QSClockBellTower( 2052): onReceive(android.intent.action.TIME_TICK) mTimeZoneString:null
+07-23 12:25:00.022 D/KeyguardUpdateMonitor( 2052): received broadcast android.intent.action.TIME_TICK
+07-23 12:25:00.043 D/QSClockBellTower( 2052): He is ready to ring the bell. (((QSClockBellSound - TimeText:12:25, TimeC
+ontentDescription:12:25, DateText:╤З╤В, 23 ╨╕╤О╨╗╤П, ShortDateText:╤З╤В, 23 ╨╕╤О╨╗., Demofalse)))
+07-23 12:25:00.043 D/QSClockHomeIndicatorView( 2052): Home Indicator status_bar_clock notifyTimeChanged(QSClockBellSoun
+d - TimeText:12:25, TimeContentDescription:12:25, DateText:╤З╤В, 23 ╨╕╤О╨╗╤П, ShortDateText:╤З╤В, 23 ╨╕╤О╨╗., Demofalse
+) ClockVisibleByPolicy:true, ClockVisibleByUser:true, visible?true, parent:android.widget.LinearLayout{c0731cd V.E.....
+. ......ID 0,0-97,88 #7f0b0472 app:id/left_clock_container}
+07-23 12:25:00.043 D/QSClockBellTower( 2052): Everyone heard the bell. run(currentTime:1784798700041,   getTime():Thu J
+ul 23 12:25:00 GMT+03:00 2026,   getTimeZone():libcore.util.ZoneInfo[mDstSavings=0,mUseDst=false,mDelegate=[id="Europe/
+Minsk",mRawOffset=10800000,mEarliestRawOffset=6616000,transitions=70]])
+07-23 12:25:00.053 D/QS      ( 2052): setQSExpansion 0.0 -118.825
+07-23 12:25:00.057 D/QS      ( 2052): setQSExpansion 0.0 -118.825
+07-23 12:25:00.057 V/SecQSFragmentAnimatorBase( 2052): setQsExpansionPosition 0.0
+07-23 12:25:00.057 V/QsExpandAnimator( 2052): setQsExpansionPosition 0.0 0
+07-23 12:25:00.057 D/QS      ( 2052): setQSExpansion 0.0 -118.825
+07-23 12:25:00.059 D/IndicatorGardenInputProperty( 2052): updateRotation() prv:-1 >> new:0
+07-23 12:25:00.060 D/DeviceState( 2052): getDeviceResolutionPixelSize - currentDensity = 420 deviceDensity = 420 initia
+lDisplaySizeFactor = 1440 currentDisplaySizeFactor = 1080 initialDisplayDensity = 560 proportionalDensity = 420 proport
+ionalPixel = 66
+07-23 12:25:00.060 D/DeviceState( 2052): getDeviceResolutionPixelSize - currentDensity = 420 deviceDensity = 420 initia
+lDisplaySizeFactor = 1440 currentDisplaySizeFactor = 1080 initialDisplayDensity = 560 proportionalDensity = 420 proport
+ionalPixel = 27
+07-23 12:25:00.060 D/DeviceState( 2052): getDeviceResolutionPixelSize - currentDensity = 420 deviceDensity = 420 initia
+lDisplaySizeFactor = 1440 currentDisplaySizeFactor = 1080 initialDisplayDensity = 560 proportionalDensity = 420 proport
+ionalPixel = 24
+07-23 12:25:00.061 D/KeyguardUpdateMonitor( 2052): handleTimeUpdate
+07-23 12:25:00.063 D/FaceWidgetPagesController( 2052): onTimeChanged()
+07-23 12:25:00.063 V/QsExpandAnimator( 2052): updateAnimators
+07-23 12:25:00.063 V/QsExpandAnimator( 2052): clearAnimationState 
+07-23 12:25:00.064 V/QsExpandAnimator( 2052): setQsExpansionPosition 0.0 0
+07-23 12:25:00.164 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:00.193 D/InputReader( 1008): Btn_touch(9): value=1 when=584298.016274
+07-23 12:25:00.193 I/InputReader( 1008): Touch event's action is 0x0 (id=4, t=0) [pCnt=1, s=0.30238 ] when=584298.01627
+4
+07-23 12:25:00.194 I/InputDispatcher( 1008): Delivering touch to (2052): action: 0x4, f=0x0, d=0, 'e572d41', t=1 
+07-23 12:25:00.194 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x0, f=0x0, d=0, '3a45779', t=1 
+07-23 12:25:00.195 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 340886082 caller: com.android.server.wm.Syst
+emGesturesPointerEventListener.onPointerEvent:179 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 android.
+view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:25:00.195 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:25:00.196 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+07-23 12:25:00.196 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 340886082 caller: com.android.server.wm.Syst
+emPerformancePointerEventListener.onPointerEvent:89 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 androi
+d.view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:25:00.196 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5026057  [3148 / 22]    HINT :     
+ list : [TABoost / 5] 
+07-23 12:25:00.196 I/HYPER-HAL(  566): [RequestManager.cpp]acquire(): Acquired ID : 5032402  [3148 / 24]    HINT :     
+ list : [TABoost / 20] [TIMEOUT / 1500] 
+07-23 12:25:00.227 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 682599639
+07-23 12:25:00.227 I/GestureDetector( 1008): obtain mCurrentMotionEventRaw. action: 2 id: 682599639
+07-23 12:25:00.294 D/PowerManagerService( 1008): [api] userActivityFromNative : 1030 (event: 2 flags: 0 displayId: 0) e
+ventTime = 584298116
+07-23 12:25:00.343 D/InputReader( 1008): Btn_touch(9): value=0 when=584298.167091
+07-23 12:25:00.344 I/InputReader( 1008): Touch event's action is 0x1 (id=4, t=0) [pCnt=1, s=] when=584298.167091
+07-23 12:25:00.344 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x1, f=0x0, d=0, '3a45779', t=1 
+07-23 12:25:00.393 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 0
+07-23 12:25:00.394 I/ViewRootImpl@5d0fc0a[MainActivity](29812): ViewPostIme pointer 1
+07-23 12:25:00.399 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:00.496 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:25:00.496 I/GestureDetector( 1008): handleMessage TAP
+07-23 12:25:00.636 V/NuPlayerDriver(  691): getCurrentPosition(0xe3742290) 4097 (msec), at state 5
+07-23 12:25:00.650 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:00.901 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:01.135 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:01.352 I/MediaFocusControl( 1008): abandonAudioFocus() from uid/pid 10700/29812 clientId=android.media.Audi
+oManager@7e45bxyz.luan.audioplayers.player.ModernFocusManager$$ExternalSyntheticLambda0@b5b6387
+07-23 12:25:01.352 D/MediaFocusControl( 1008): selectFocusStack, uid = 10700, appDevice = 0, device = 2
+07-23 12:25:01.354 V/AS.AudioService( 1008): setMode(mode=0, pid=29812, uid=10700, caller=com.yardflare.rallygame)
+07-23 12:25:01.354 W/AS.AudioService( 1008): Audio Settings Permission Denial: setMode() from pid=29812, uid=10700
+07-23 12:25:01.354 W/AS.AudioService( 1008): Audio Settings Permission Denial: setSpeakerphoneOn() from pid=29812, uid=
+10700
+07-23 12:25:01.370 E/SurfaceFlinger(  590): Attempt to update InputPolicyFlags without permission ACCESS_SURFACE_FLINGE
+R
+07-23 12:25:01.415 D/InputReader( 1008): Btn_touch(9): value=1 when=584299.238422
+07-23 12:25:01.416 I/InputReader( 1008): Touch event's action is 0x0 (id=4, t=0) [pCnt=1, s=0.30239 ] when=584299.23842
+2
+07-23 12:25:01.416 I/InputDispatcher( 1008): Delivering touch to (2052): action: 0x4, f=0x0, d=0, 'e572d41', t=1 
+07-23 12:25:01.417 I/InputDispatcher( 1008): Delivering touch to (29812): action: 0x0, f=0x0, d=0, '3a45779', t=1 
+07-23 12:25:01.417 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 626124491 caller: com.android.server.wm.Syst
+emGesturesPointerEventListener.onPointerEvent:179 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 android.
+view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:25:01.418 I/GestureDetector( 1008): obtain mCurrentDownEvent. id: 626124491 caller: com.android.server.wm.Syst
+emPerformancePointerEventListener.onPointerEvent:89 com.android.server.wm.PointerEventDispatcher.onInputEvent:71 androi
+d.view.InputEventReceiver.dispatchInputEvent:259 
+07-23 12:25:01.418 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTABoost/3148@22, type = 1090523139
+07-23 12:25:01.418 I/SemDvfsHyPerManager( 3148): acquire hyper - BaseTAToouchBoost/3148@24, type = 1090523139
+
+
