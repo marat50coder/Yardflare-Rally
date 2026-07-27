@@ -45,5 +45,6 @@ app.*.map.json
 /android/app/release
 
 # Firebase / sensitive keys (public repo)
-ios/Runner/GoogleService-Info.plist
+# NOTE: GoogleService-Info.plist is intentionally committed —
+# it ships inside every IPA and is not a secret per Google docs.
 google-services.json
