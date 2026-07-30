@@ -1,0 +1,88 @@
+---
+description: How to port the gray flow into a new app so the binary is NOT a clone of sibling apps, and how to maximize App Store approval. Read before porting/reviewing any gray-part project.
+alwaysApply: false
+---
+
+# Gray Part Mixing & Anti-Fingerprint Review
+
+The #1 reason a portfolio of gray-flow apps dies is **cross-binary similarity**:
+Apple/Google cluster apps by shared code, strings and infrastructure (Guideline
+4.3 Spam, sometimes account ban). Renaming public classes is NOT enough — static
+analysis reads private symbols, string literals and machine code. Every new app
+must differ at the level below.
+
+## 1. MUST be unique per app (never copy 1:1)
+
+- **Cipher algorithm** (`helpers/cipher.dart`): change the *algorithm*, not just
+  the seed. Rotate between families across the portfolio: FNV+LCG, RC4-style
+  KSA/PRGA, table permutation, position-keyed XOR. Different algorithm = different
+  machine code. Re-run `tool/encode_era_values.dart` (kept in sync) to regenerate all
+  byte arrays.
+- **JS injections** (WebView page): rewrite the bodies — different function names,
+  variable names, control structure, string formatting, sentinel flags
+  (`window.__dgaSa` → `root.dvInsetGuard`). Remove site-specific selectors like
+  `.gameview-mobile-header`. These strings are grep-able; identical JS = instant cluster.
+- **Network probe host** (`net_probe`): not always `cloudflare.com`. Rotate
+  `apple.com` / `google.com` / own host; vary single-host vs multi-host loop.
+- **User-Agent fallback** (`masked_agent`): different model/build/OS strings and
+  Chrome/Safari build numbers per app.
+- **Class / method / variable names** AND the **control-flow** where feasible.
+- **SharedPrefs / SecureStorage key prefix** (`era.hatch.*` → `dga.*` → ...), notification
+  channel id, SceneDelegate UserDefaults key.
+- **pbxproj UUIDs for the NSE**: random 24-hex (`secrets.token_hex(12).upper()`),
+  never a predictable pattern like `AA000001...` / `BB2026...`. Vary section order.
+- **Dependency versions**: let `flutter pub add` pick latest (ranged `^`), don't
+  pin the same exact versions as siblings.
+- **Backend infrastructure**: different config domain / host / IP subnet per app.
+  One config endpoint shared across the portfolio = trivial cluster.
+
+## 2. Logging — nothing in release
+
+- Dart: use an `assert`-wrapped logger so closures AND their string literals are
+  stripped from release builds:
+  ```dart
+  void hubLog(String Function() build) {
+    assert(() { debugPrint(build()); return true; }());
+  }
+  // call: hubLog(() => '[tag] msg $x');
+  ```
+  Never call bare `debugPrint('[tag] ...')` — the literal ships in release and is grep-able.
+- Swift (SceneDelegate / AppDelegate): wrap every `NSLog` in `#if DEBUG ... #endif`.
+- Tags themselves must be app-specific (`[DGA.*]` not shared `[ERA.*]`).
+
+## 3. Permissions — only what the VISIBLE app justifies
+
+The reviewer sees the white game, not the WebView. A puzzle that requests camera,
+mic, photos and background fetch is a red flag.
+
+- Remove what the game can't justify: **microphone**, background **`fetch`**.
+- Keep `remote-notification` (push is a real feature).
+- If a permission must stay for the WebView (camera can't be cleanly disabled
+  without crashing on a camera `<input>`; photo upload needs gallery), **add a real
+  white-part feature that uses it** so the reviewer sees a legitimate use — e.g. an
+  avatar/profile photo picker (`image_picker`, camera + gallery). Then word the
+  `NS*UsageDescription` around that feature, not the WebView.
+- Declare tracking (IDFA/AppsFlyer) in App Store Connect → App Privacy, or it's an
+  automatic reject.
+
+## 4. Maximize approval
+
+- App Store metadata (screenshots, description, keywords) must describe the WHITE
+  game only — never hint at the WebView.
+- Reviewer note: "this is an offline puzzle game".
+- `ITSAppUsesNonExemptEncryption=false`, NSE `SKIP_INSTALL=YES`,
+  `PRODUCT_NAME="$(TARGET_NAME)"`, NSE configs with NO `baseConfigurationReference`.
+- Keep the gray flow genuinely invisible to organic/unattributed installs.
+
+## 5. Save / uniqueization checklist (run before commit)
+
+- [ ] `dart run tool/encode_era_values.dart` → VERIFY block matches plaintext exactly
+- [ ] cipher algorithm differs from every sibling app
+- [ ] JS injection bodies rewritten (not just sentinel names)
+- [ ] probe host + UA fallback changed
+- [ ] no bare `debugPrint`/`NSLog` strings in release path
+- [ ] permissions trimmed + justified by a real white feature
+- [ ] pbxproj NSE UUIDs randomized (no shared pattern), no UTF-8 BOM, CRLF preserved
+- [ ] dependency versions differ from siblings
+- [ ] backend domain/infra distinct
+- [ ] `flutter analyze` clean, then commit + push

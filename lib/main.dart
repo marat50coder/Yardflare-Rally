@@ -15,38 +15,39 @@ import 'hatchway/infra/nest_vault.dart';
 import 'hatchway/infra/roost_agent.dart';
 import 'screens/boot_screen.dart';
 
-/// Entry point. Warms up the gray-flow services, then mounts the boot screen
-/// which runs the attribution → config pipeline and routes to either the
-/// WebView (non-organic) or the native Yardflare game (organic / reviewers).
+/// Entry point. Warms up the gray-flow services, then mounts the boot
+/// screen which runs the attribution → config pipeline and routes to
+/// either the WebView (non-organic) or the native Yardflare game
+/// (organic / reviewers).
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  final vault = NestVault();
-  final agent = RoostAgent();
+  final safe = CoopSafe();
+  final agent = HerderAgent();
   await Future.wait<void>(<Future<void>>[
-    vault.initialize(),
+    safe.initialize(),
     agent.prepare(),
   ]);
 
   assert(() {
     debugPrint(
-      '[YFR.BOOT] credentialsReady=${EraHatchConfig.grayCredentialsReady} '
-      'endpoint=${EraHatchConfig.endpoint} '
-      'afKeyLen=${EraHatchConfig.appsFlyerKey.length} '
-      'fbNum=${EraHatchConfig.firebaseProjectNumber}',
+      '[LBR.BOOT] credentialsReady=${LanternRallyEnv.grayCredentialsReady} '
+      'endpoint=${LanternRallyEnv.endpoint} '
+      'afKeyLen=${LanternRallyEnv.appsFlyerKey.length} '
+      'fbNum=${LanternRallyEnv.firebaseProjectNumber}',
     );
     return true;
   }());
 
   var productionServicesReady = false;
-  if (EraHatchConfig.grayCredentialsReady) {
+  if (LanternRallyEnv.grayCredentialsReady) {
     try {
       await Firebase.initializeApp();
       productionServicesReady = true;
     } catch (error) {
       assert(() {
-        debugPrint('[YFR.BOOT] Firebase.initializeApp failed: $error');
+        debugPrint('[LBR.BOOT] Firebase.initializeApp failed: $error');
         return true;
       }());
     }
@@ -60,35 +61,35 @@ Future<void> main() async {
       } catch (error) {
         // App Check must never block FCM / gray routing.
         assert(() {
-          debugPrint('[YFR.BOOT] AppCheck skipped: $error');
+          debugPrint('[LBR.BOOT] AppCheck skipped: $error');
           return true;
         }());
       }
     }
   }
 
-  final probe = AirwayProbe();
+  final scout = PastureScout();
   // Attribution + config POST must run even if Firebase failed to init;
-  // only push/FCM needs productionServicesReady.
-  final notifications = EggSignalHub(vault, enabled: productionServicesReady);
-  final attribution = FlightAttribution(agent);
-  final coordinator = HatchCoordinator(
-    vault: vault,
-    probe: probe,
-    attribution: attribution,
-    exchange: HatchExchange(agent, vault),
-    notifications: notifications,
+  // only push / FCM needs productionServicesReady.
+  final torches = TorchRelay(safe, enabled: productionServicesReady);
+  final tracker = TrackerRelay(agent);
+  final router = WardenRouter(
+    safe: safe,
+    scout: scout,
+    tracker: tracker,
+    relay: SignalExchange(agent, safe),
+    torches: torches,
     agent: agent,
-    runtimeEnabled: EraHatchConfig.grayCredentialsReady,
+    runtimeEnabled: LanternRallyEnv.grayCredentialsReady,
   );
 
-  runApp(YardflareApp(hatchCoordinator: coordinator));
+  runApp(YardflareApp(router: router));
 }
 
 class YardflareApp extends StatelessWidget {
-  const YardflareApp({super.key, this.hatchCoordinator});
+  const YardflareApp({super.key, this.router});
 
-  final HatchCoordinator? hatchCoordinator;
+  final WardenRouter? router;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +97,7 @@ class YardflareApp extends StatelessWidget {
       title: 'Yardflare Rally',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.build(),
-      home: BootScreen(hatchCoordinator: hatchCoordinator),
+      home: BootScreen(router: router),
     );
   }
 }

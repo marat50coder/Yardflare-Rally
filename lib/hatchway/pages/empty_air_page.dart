@@ -3,26 +3,27 @@ import 'package:flutter/services.dart';
 
 import '../infra/airway_probe.dart';
 
-/// Offline screen. Retry re-runs the whole pipeline by pushing a fresh
-/// [retryBuilder] widget using THIS page's own (mounted) context — never a
-/// captured parent context, which would be defunct after pushReplacement.
-class EmptyAirPage extends StatefulWidget {
-  const EmptyAirPage({
+/// No-signal screen. Retry runs a fresh probe and, on success, pushes a
+/// new `retryBuilder`-built widget using THIS page's own (mounted)
+/// context — never a captured parent context (which would be defunct
+/// after a `pushReplacement`).
+class SilentCoopPage extends StatefulWidget {
+  const SilentCoopPage({
     super.key,
-    required this.probe,
+    required this.scout,
     required this.retryBuilder,
   });
 
-  final AirwayProbe probe;
+  final PastureScout scout;
   final WidgetBuilder retryBuilder;
 
   @override
-  State<EmptyAirPage> createState() => _EmptyAirPageState();
+  State<SilentCoopPage> createState() => _SilentCoopPageState();
 }
 
-class _EmptyAirPageState extends State<EmptyAirPage> {
-  bool _checking = false;
-  bool _stillOffline = false;
+class _SilentCoopPageState extends State<SilentCoopPage> {
+  bool _probing = false;
+  bool _stillDark = false;
 
   @override
   void initState() {
@@ -38,28 +39,28 @@ class _EmptyAirPageState extends State<EmptyAirPage> {
   }
 
   Future<void> _retry() async {
-    if (_checking) return;
+    if (_probing) return;
     HapticFeedback.lightImpact();
     setState(() {
-      _checking = true;
-      _stillOffline = false;
+      _probing = true;
+      _stillDark = false;
     });
-    bool online = false;
+    var reachable = false;
     try {
-      online = await widget.probe.canReachNetwork();
+      reachable = await widget.scout.canReachNetwork();
     } catch (_) {
-      online = false;
+      reachable = false;
     }
     if (!mounted) return;
-    if (online) {
+    if (reachable) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(builder: widget.retryBuilder),
       );
       return;
     }
     setState(() {
-      _checking = false;
-      _stillOffline = true;
+      _probing = false;
+      _stillDark = true;
     });
   }
 
@@ -67,7 +68,7 @@ class _EmptyAirPageState extends State<EmptyAirPage> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     final landscape = media.orientation == Orientation.landscape;
-    final background = landscape
+    final art = landscape
         ? 'assets/Horizontal_Nowifi_Screen.webp'
         : 'assets/Vertical_Nowifi_Screen.webp';
     final width = landscape
@@ -77,7 +78,8 @@ class _EmptyAirPageState extends State<EmptyAirPage> {
     // Landscape: no safe-area, buttons centred horizontally (avoids the
     // notch offset that shifts the horizontal centre). Portrait: keep a
     // little bottom room above the home indicator.
-    final align = landscape ? const Alignment(0, 0.82) : const Alignment(0, 0.80);
+    final align =
+        landscape ? const Alignment(0, 0.82) : const Alignment(0, 0.80);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -85,7 +87,7 @@ class _EmptyAirPageState extends State<EmptyAirPage> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            background,
+            art,
             fit: BoxFit.cover,
             filterQuality: FilterQuality.high,
           ),
@@ -98,12 +100,12 @@ class _EmptyAirPageState extends State<EmptyAirPage> {
                 _RetryButton(
                   width: width,
                   height: height,
-                  busy: _checking,
+                  busy: _probing,
                   onTap: _retry,
                 ),
                 AnimatedSize(
                   duration: const Duration(milliseconds: 180),
-                  child: _stillOffline
+                  child: _stillDark
                       ? const Padding(
                           padding: EdgeInsets.only(top: 12),
                           child: Text(
@@ -157,7 +159,11 @@ class _RetryButton extends StatelessWidget {
           ),
           border: Border.all(color: const Color(0xFF61301C), width: 3),
           boxShadow: const <BoxShadow>[
-            BoxShadow(color: Colors.black45, blurRadius: 12, offset: Offset(0, 5)),
+            BoxShadow(
+              color: Colors.black45,
+              blurRadius: 12,
+              offset: Offset(0, 5),
+            ),
           ],
         ),
         child: Material(
@@ -177,8 +183,11 @@ class _RetryButton extends StatelessWidget {
                   : const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Icon(Icons.refresh_rounded,
-                            color: Color(0xFF422014), size: 28),
+                        Icon(
+                          Icons.refresh_rounded,
+                          color: Color(0xFF422014),
+                          size: 28,
+                        ),
                         SizedBox(width: 10),
                         Text(
                           'Retry',

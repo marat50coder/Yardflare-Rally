@@ -9,43 +9,43 @@ import '../hatchway/pages/feather_invitation.dart';
 import '../hatchway/pages/roost_portal.dart';
 import 'loading_screen.dart';
 
-/// Splash / boot screen — the loading experience AND the gray/white routing
-/// point. It plays the loading art (orientation-aware) while
-/// [HatchCoordinator.decide] runs the attribution → config pipeline, then
+/// Splash / boot screen — the loading experience AND the gray/white
+/// routing point. It plays the loading art (orientation-aware) while
+/// [WardenRouter.decide] runs the attribution → config pipeline, then
 /// routes to the WebView (gray) or the white part (organic).
 ///
 /// TEMPLATE NOTES:
-/// - Do NOT push another loading screen from the white part — this IS the
-///   splash. Route the white part straight to its first screen.
-/// - To make the progress bar reflect real work, precache your game assets in
-///   [_assetsToLoad]; the bar advances as each finishes.
+/// - Do NOT push another loading screen from the white part — this IS
+///   the splash. Route the white part straight to its first screen.
+/// - To make the progress bar reflect real work, precache your game
+///   assets in [_assetsToLoad]; the bar advances as each finishes.
 class BootScreen extends StatefulWidget {
-  const BootScreen({super.key, this.hatchCoordinator});
+  const BootScreen({super.key, this.router});
 
-  final HatchCoordinator? hatchCoordinator;
+  final WardenRouter? router;
 
   @override
   State<BootScreen> createState() => _BootScreenState();
 }
 
 class _BootScreenState extends State<BootScreen> {
-  // TEMPLATE: add your game's asset paths here to precache them during boot,
-  // e.g. 'assets/mascot/hero.png'. Empty in the template.
+  // TEMPLATE: add your game's asset paths here to precache them during
+  // boot, e.g. 'assets/mascot/hero.png'. Empty in the template.
   final List<String> _assetsToLoad = <String>[];
 
   int _loaded = 0;
-  double _hatchProgress = 0;
-  HatchDestination? _destination;
+  double _routerProgress = 0;
+  NightHold? _hold;
   bool _started = false;
   bool _navigating = false;
-  late final DateTime _startTime;
+  late final DateTime _bootStarted;
   Timer? _hardDeadline;
   static const Duration _minSplash = Duration(milliseconds: 1600);
 
   @override
   void initState() {
     super.initState();
-    _startTime = DateTime.now();
+    _bootStarted = DateTime.now();
     // Loading screen supports both orientations.
     SystemChrome.setPreferredOrientations(const [
       DeviceOrientation.portraitUp,
@@ -72,14 +72,14 @@ class _BootScreenState extends State<BootScreen> {
     super.didChangeDependencies();
     if (!_started) {
       _started = true;
-      _beginLaunchWork();
+      _kickoff();
     }
   }
 
-  Future<void> _beginLaunchWork() async {
+  Future<void> _kickoff() async {
     await Future.wait<void>(<Future<void>>[
       _preloadAll(),
-      _resolveHatchDestination(),
+      _askRouter(),
     ]);
     _maybeNavigate();
   }
@@ -96,30 +96,30 @@ class _BootScreenState extends State<BootScreen> {
     _maybeNavigate();
   }
 
-  Future<void> _resolveHatchDestination() async {
-    final coordinator = widget.hatchCoordinator;
-    if (coordinator == null) {
-      _destination = const NativeNest();
-      _hatchProgress = 1;
+  Future<void> _askRouter() async {
+    final router = widget.router;
+    if (router == null) {
+      _hold = const HomeHold();
+      _routerProgress = 1;
       return;
     }
     try {
-      _destination = await coordinator.decide(
+      _hold = await router.decide(
         onProgress: (value) {
-          if (mounted) setState(() => _hatchProgress = value.clamp(0.0, 1.0));
+          if (mounted) setState(() => _routerProgress = value.clamp(0.0, 1.0));
         },
       );
     } catch (_) {
-      _destination = const NativeNest();
+      _hold = const HomeHold();
     }
-    if (mounted) setState(() => _hatchProgress = 1);
+    if (mounted) setState(() => _routerProgress = 1);
   }
 
   void _maybeNavigate() async {
-    if (_navigating || _destination == null || _loaded < _assetsToLoad.length) {
+    if (_navigating || _hold == null || _loaded < _assetsToLoad.length) {
       return;
     }
-    final elapsed = DateTime.now().difference(_startTime);
+    final elapsed = DateTime.now().difference(_bootStarted);
     if (elapsed < _minSplash) {
       await Future<void>.delayed(_minSplash - elapsed);
     }
@@ -128,56 +128,56 @@ class _BootScreenState extends State<BootScreen> {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     await Future<void>.delayed(const Duration(milliseconds: 60));
     if (!mounted) return;
-    await _openDestination(_destination!);
+    await _openHold(_hold!);
   }
 
-  Future<void> _openDestination(HatchDestination destination) async {
-    final coordinator = widget.hatchCoordinator;
+  Future<void> _openHold(NightHold hold) async {
+    final router = widget.router;
 
-    // Organic / gate disabled → white part (the real Yardflare game entry).
-    if (destination is NativeNest || coordinator == null) {
+    // Organic / gate disabled → white part (the real Yardflare game).
+    if (hold is HomeHold || router == null) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(builder: (_) => const LoadingScreen()),
       );
       return;
     }
 
-    if (destination is OfflineNest) {
+    if (hold is DarkHold) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
-          builder: (_) => EmptyAirPage(
-            probe: coordinator.probe,
-            retryBuilder: (_) => BootScreen(hatchCoordinator: coordinator),
+          builder: (_) => SilentCoopPage(
+            scout: router.scout,
+            retryBuilder: (_) => BootScreen(router: router),
           ),
         ),
       );
       return;
     }
 
-    if (destination is PortalNest) {
-      Widget portalBuilder(BuildContext _) => RoostPortal(
-        url: destination.url,
-        coldLaunch: destination.coldLaunch,
-        vault: coordinator.vault,
-        probe: coordinator.probe,
-        notifications: coordinator.notifications,
-        agent: coordinator.agent,
+    if (hold is WebHold) {
+      Widget portalBuilder(BuildContext _) => LanternPortal(
+        url: hold.url,
+        coldLaunch: hold.coldLaunch,
+        safe: router.safe,
+        scout: router.scout,
+        torches: router.torches,
+        agent: router.agent,
       );
 
       void openPortal() {
-        Navigator.of(
-          context,
-        ).pushReplacement(MaterialPageRoute<void>(builder: portalBuilder));
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute<void>(builder: portalBuilder),
+        );
       }
 
-      if (coordinator.vault.shouldShowPushInvite &&
-          await coordinator.notifications.canOfferPermission()) {
+      if (router.safe.shouldShowPushInvite &&
+          await router.torches.canOfferPermission()) {
         if (!mounted) return;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute<void>(
-            builder: (_) => FeatherInvitation(
-              vault: coordinator.vault,
-              notifications: coordinator.notifications,
+            builder: (_) => TorchInvitation(
+              safe: router.safe,
+              torches: router.torches,
               nextBuilder: portalBuilder,
             ),
           ),
@@ -191,7 +191,7 @@ class _BootScreenState extends State<BootScreen> {
   double get _progress {
     final assetProgress =
         _assetsToLoad.isEmpty ? 1.0 : _loaded / _assetsToLoad.length;
-    return (assetProgress * 0.35 + _hatchProgress * 0.65).clamp(0.0, 1.0);
+    return (assetProgress * 0.35 + _routerProgress * 0.65).clamp(0.0, 1.0);
   }
 
   @override

@@ -2,16 +2,21 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LaunchRouteReader {
-  static const String _dartKey = 'yfr_launch_route';
+/// Consumes the cold-start deep link that `SceneDelegate` wrote into
+/// `UserDefaults` when the user tapped a notification while the app was
+/// killed. The Swift side writes under `flutter.<_dartKey>` (the
+/// `flutter.` prefix is added by the shared_preferences bridge — do NOT
+/// duplicate it here).
+class ColdLinkReader {
+  static const String _dartKey = 'lbr_cold_link';
 
   static Future<String?> consume() async {
     if (!Platform.isIOS) return null;
     try {
-      final preferences = await SharedPreferences.getInstance();
-      final value = preferences.getString(_dartKey)?.trim();
+      final prefs = await SharedPreferences.getInstance();
+      final value = prefs.getString(_dartKey)?.trim();
       if (value == null || value.isEmpty) return null;
-      await preferences.remove(_dartKey);
+      await prefs.remove(_dartKey);
       return value;
     } catch (_) {
       return null;

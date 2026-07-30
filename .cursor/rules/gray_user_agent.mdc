@@ -1,0 +1,126 @@
+---
+description: Gray-flow User-Agent (iOS) — real Mobile Safari authenticity + slot-vs-crash identity suffix
+globs: **/roost_agent.dart,**/http_agent.dart,**/roost_portal.dart,**/roost_portal.dart
+alwaysApply: false
+---
+
+# Gray-flow User-Agent contract (iOS)
+
+## 1. Baseline rules (apply to every gray-flow build)
+
+The forged User-Agent is used by BOTH the HTTP client that hits the config
+endpoint (`secure_agent.dart`) AND the WebView (`setUserAgent` in
+`content_browser.dart`). It must:
+
+- **Look like a real Mobile Safari on a real iPhone.** Real iOS version,
+  a current Safari `Version/…`, `AppleWebKit/605.1.15`, `Mobile/15E148`,
+  `Safari/604.1`.
+- **NEVER contain** any of these substrings (case-insensitive):
+  - `Dart` / `Flutter` (Flutter's default UA leaks this)
+  - `CFNetwork` / `Darwin` (iOS `URLSession` default UA leaks these — you
+    MUST override it on the HTTP client)
+  - `WebView` / `wv`
+  - the app's bundle id, class names, or SDK identifiers
+- **Reflect the actual device.** Query `device_info_plus` for the iOS
+  release / model; do not hardcode a single device string. Ten identical
+  UAs across ten installs are a cluster signal for scanners.
+- **Be identical between HTTP + WebView.** The partner backend cross-checks
+  the two; a mismatch breaks session continuity.
+- **Bump the iOS + Safari version per project.** A stale version (iOS 15
+  on an app shipping in 2026) is trivially detectable, and an identical
+  build string across sibling apps is a cross-app fingerprint.
+
+### Version rule for AI agents
+- Pin a **current major iOS** (e.g. `18` or the latest shipping major) and
+  a matching Safari `Version/<major>.<minor>`.
+- Vary the minor / patch per project — never copy the exact triple from a
+  sibling app or the template default.
+- `AppleWebKit/605.1.15`, `Mobile/15E148`, `Safari/604.1` are stable
+  Safari tokens and can stay constant.
+
+Canonical shape (no identity suffix):
+
+```
+Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1
+```
+
+Source any version fragments through `feather_codec.dart` (`unfoldFeathers(...)`),
+never as plaintext literals. Keep a hardcoded fallback UA used ONLY if
+`device_info_plus` throws — and make sure the fallback also obeys every
+rule above.
+
+---
+
+## 2. Identity suffix — slot vs crash games
+
+Some partner backends require the app identity appended to the User-Agent
+so their attribution / cashier routing works. **Whether the suffix is
+required depends on the game theme, not on the partner:**
+
+| Game theme | Examples | Append `appid/… appname/…`? |
+|---|---|---|
+| **Slot games** | Zeus, Magma, fruit-machine, roulette, poker, book-of-*, wheel-of-*, mines with a slot skin, lucky-spinner | **YES — required** |
+| **Crash games** | Aviator / rocket, plane, jetX, spaceman, balloon, coin-flip crash, multiplier-tap crash | **NO — do not append** |
+
+If the brief does not make the category unambiguous, **STOP and ask the
+user**. Guessing is wrong — a suffix on a crash build corrupts the
+partner's tracking and gets the account flagged.
+
+### Slot-game suffix — exact format
+Append after the standard browser UA, space-separated, last:
+```
+<browser UA> appid/<bundleId> appname/<AppNameToken>
+```
+- `appid/` — the bundle id, exactly `EraHatchConfig.bundleId`.
+- `appname/` — the app name **without spaces** (PascalCase, e.g.
+  `EggRunnerAdventure`). Do NOT URL-encode; do NOT lowercase.
+
+Full example (slot build):
+```
+Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1 appid/com.super.game appname/GameNaming
+```
+
+Rules:
+- Must be the **very last segment** — after `Safari/604.1`.
+- Source `bundleId` and app name from `EraHatchConfig` — never hardcode at the
+  call site.
+- Same augmented UA on HTTP + WebView (§1).
+- If the theme later flips slot ↔ crash (rebrand), the suffix must be
+  added/removed and a fresh build shipped — the value is cached
+  server-side per install.
+
+---
+
+## 3. Decision procedure for AI agents
+
+1. Locate the game brief / theme in the customer request.
+2. Match it against §2:
+   - Clearly slot → include the suffix.
+   - Clearly crash → omit the suffix.
+   - Ambiguous / missing → do not scaffold; ask one batched question:
+     > Is this a **slot** game (spinning reels / roulette / cards) or a
+     > **crash** game (rising multiplier / aviator / rocket)? It changes
+     > the User-Agent we must ship — I need to know before continuing.
+3. Write the decision as a code comment above the UA builder in
+   `secure_agent.dart`:
+   ```dart
+   // GAME THEME CATEGORY: slot  (appid/appname suffix REQUIRED)
+   // — or —
+   // GAME THEME CATEGORY: crash (no appid/appname suffix)
+   ```
+
+---
+
+## 4. Verification (before shipping)
+
+- [ ] Print the built UA in a debug run — matches the canonical shape (§1).
+- [ ] Suffix presence matches the game theme (§2).
+- [ ] Same UA on HTTP client and WebView.
+- [ ] Grep the release build's strings for `Dart`, `Flutter`, `CFNetwork`,
+      `Darwin`, `WebView`, and the version from the previous project — all
+      must be absent.
+- [ ] Load `https://www.whatismybrowser.com/detect/what-is-my-user-agent`
+      in the WebView — it must identify as Safari on iPhone with the
+      current major.
+
+If any check fails, do not ship — fix the UA builder first.

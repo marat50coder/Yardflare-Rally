@@ -10,48 +10,56 @@ import 'package:flutter/widgets.dart';
 import '../config/era_hatch_config.dart';
 import 'roost_agent.dart';
 
-void yfrTrace(String Function() message) {
+/// Debug-only trace helper. Wrapped in `assert(() {})` so the closure body
+/// AND every string literal it composes are stripped from release builds.
+/// Never call `debugPrint` bare — the string ships in release and clusters
+/// the app with siblings that emit the same tag.
+void lbrTrace(String Function() build) {
   assert(() {
-    debugPrint(message());
+    debugPrint(build());
     return true;
   }());
 }
 
-class FlightAttribution {
-  FlightAttribution(this._agent);
+/// AppsFlyer wiring: fires ATT, initialises the SDK, and stitches the
+/// callbacks (`onInstallConversionData`, `onAppOpenAttribution`,
+/// `onDeepLinking`) into one flat payload that `SignalExchange` POSTs to
+/// the config endpoint verbatim.
+class TrackerRelay {
+  TrackerRelay(this._agent);
 
-  final RoostAgent _agent;
+  final HerderAgent _agent;
   AppsflyerSdk? _sdk;
-  Map<String, dynamic>? _install;
-  Map<String, dynamic>? _reopen;
-  Map<String, dynamic>? _deepLink;
-  Future<void>? _startFuture;
+  Map<String, dynamic>? _installBag;
+  Map<String, dynamic>? _reopenBag;
+  Map<String, dynamic>? _deepLinkBag;
+  Future<void>? _bootstrap;
   final Completer<void> _installReady = Completer<void>();
   final Completer<void> _deepLinkReady = Completer<void>();
 
-  Future<void> start() => _startFuture ??= _start();
+  Future<void> start() => _bootstrap ??= _start();
 
   Future<void> _start() async {
-    if (!EraHatchConfig.grayCredentialsReady) {
+    if (!LanternRallyEnv.grayCredentialsReady) {
       _completeEmpty();
       return;
     }
     try {
-      await _requestTrackingIfNeeded();
+      await _promptTrackingIfNeeded();
       final sdk = AppsflyerSdk(
         AppsFlyerOptions(
-          afDevKey: EraHatchConfig.appsFlyerKey,
-          appId: EraHatchConfig.iosStoreId,
+          afDevKey: LanternRallyEnv.appsFlyerKey,
+          appId: LanternRallyEnv.iosStoreId,
           showDebug: kDebugMode,
           timeToWaitForATTUserAuthorization: 4,
         ),
       );
       _sdk = sdk;
-      sdk.onInstallConversionData(_acceptInstall);
-      sdk.onAppOpenAttribution((raw) => _reopen = _flat(raw));
+      sdk.onInstallConversionData(_absorbInstall);
+      sdk.onAppOpenAttribution((raw) => _reopenBag = _flatten(raw));
       sdk.onDeepLinking((result) {
         final event = result.deepLink?.clickEvent;
-        if (event != null) _deepLink = Map<String, dynamic>.from(event);
+        if (event != null) _deepLinkBag = Map<String, dynamic>.from(event);
         if (!_deepLinkReady.isCompleted) _deepLinkReady.complete();
       });
       await sdk.initSdk(
@@ -60,12 +68,12 @@ class FlightAttribution {
         registerOnDeepLinkingCallback: true,
       );
     } catch (error) {
-      yfrTrace(() => '[YFR.FLIGHT] initialization failed: $error');
+      lbrTrace(() => '[LBR.FLIGHT] initialization failed: $error');
       _completeEmpty();
     }
   }
 
-  Future<void> _requestTrackingIfNeeded() async {
+  Future<void> _promptTrackingIfNeeded() async {
     if (!Platform.isIOS) return;
     final status = await AppTrackingTransparency.trackingAuthorizationStatus;
     if (status != TrackingStatus.notDetermined) return;
@@ -74,38 +82,40 @@ class FlightAttribution {
     await AppTrackingTransparency.requestTrackingAuthorization();
   }
 
-  Future<void> _acceptInstall(dynamic raw) async {
+  Future<void> _absorbInstall(dynamic raw) async {
     try {
-      final received = _flat(raw);
+      final received = _flatten(raw);
       final status = received['status']?.toString().toLowerCase();
-      // AppsFlyer delivers a {status:failure,...,data:"Request failed"} map
-      // when it can't reach its servers (e.g. an ad-blocking VPN blackholes
-      // *.appsflyersdk.com). Never merge that error map into the payload.
+      // AppsFlyer emits {status:failure,...,data:"Request failed"} when it
+      // cannot reach its servers (VPN blackhole, network drop). Never merge
+      // that error map into the payload — it would poison the config body.
       final failed = status == 'failure' ||
           (received['af_status'] == null && received.containsKey('status'));
-      yfrTrace(
-        () => '[YFR.FLIGHT] conversion status=$status '
+      lbrTrace(
+        () => '[LBR.FLIGHT] conversion status=$status '
             'af_status=${received['af_status']} keys=${received.keys.toList()}',
       );
       if (failed) {
-        _install = <String, dynamic>{};
+        _installBag = <String, dynamic>{};
       } else if (received['af_status'] == 'Organic') {
+        // Small wait, then re-fetch via GCD — the SDK sometimes reports an
+        // install as Organic that the GCD server later reclassifies.
         await Future<void>.delayed(
-          const Duration(seconds: EraHatchConfig.organicRecheckSeconds),
+          const Duration(seconds: LanternRallyEnv.organicRecheckSeconds),
         );
-        _install = await _fetchGcd() ?? received;
+        _installBag = await _fetchGcd() ?? received;
       } else {
-        _install = received;
+        _installBag = received;
       }
     } catch (error) {
-      yfrTrace(() => '[YFR.FLIGHT] conversion parse error: $error');
-      _install = <String, dynamic>{};
+      lbrTrace(() => '[LBR.FLIGHT] conversion parse error: $error');
+      _installBag = <String, dynamic>{};
     } finally {
       if (!_installReady.isCompleted) _installReady.complete();
     }
   }
 
-  Map<String, dynamic> _flat(dynamic raw) {
+  Map<String, dynamic> _flatten(dynamic raw) {
     if (raw is! Map) return <String, dynamic>{};
     final map = Map<String, dynamic>.from(raw);
     final payload = map['payload'];
@@ -116,17 +126,17 @@ class FlightAttribution {
     final uid = await appsFlyerId();
     if (uid == null || uid.isEmpty) return null;
     try {
-      // iOS GCD uses the numeric App Store id, not the bundle id.
-      final base = EraHatchConfig.gcdBase;
-      final sep = base.contains('?') ? '&' : '?';
+      // iOS GCD lookup uses the numeric App Store id, not the bundle id.
+      final base = LanternRallyEnv.gcdBase;
+      final separator = base.contains('?') ? '&' : '?';
       final uri = Uri.parse(
-        '$base${sep}app_id=${EraHatchConfig.iosStoreId}&device_id=$uid',
+        '$base${separator}app_id=${LanternRallyEnv.iosStoreId}&device_id=$uid',
       );
       final response = await _agent
           .get(
             uri,
             headers: <String, String>{
-              'Authorization': 'Bearer ${EraHatchConfig.appsFlyerKey}',
+              'Authorization': 'Bearer ${LanternRallyEnv.appsFlyerKey}',
             },
           )
           .timeout(const Duration(seconds: 12));
@@ -163,31 +173,36 @@ class FlightAttribution {
     required String locale,
     String? pushToken,
   }) async {
+    // Build the config body as a FLAT object (no nested attribution key).
+    // Field names below are the backend contract — never rename.
     final body = <String, dynamic>{};
-    if (_install != null) body.addAll(_install!);
-    if (_reopen != null) {
-      _reopen!.forEach((key, value) => body.putIfAbsent(key, () => value));
+    if (_installBag != null) body.addAll(_installBag!);
+    if (_reopenBag != null) {
+      _reopenBag!.forEach((key, value) => body.putIfAbsent(key, () => value));
     }
-    if (_deepLink != null) {
-      _deepLink!.forEach((key, value) => body.putIfAbsent(key, () => value));
+    if (_deepLinkBag != null) {
+      _deepLinkBag!.forEach(
+        (key, value) => body.putIfAbsent(key, () => value),
+      );
     }
 
     body['af_id'] = await appsFlyerId() ?? body['af_id'] ?? '';
-    body['bundle_id'] = EraHatchConfig.bundleId;
+    body['bundle_id'] = LanternRallyEnv.bundleId;
     body['os'] = 'iOS';
-    body['store_id'] = EraHatchConfig.storeToken;
+    body['store_id'] = LanternRallyEnv.storeToken;
     body['locale'] = locale;
+    final firebaseProject = LanternRallyEnv.firebaseProjectNumber;
     if (pushToken != null &&
         pushToken.isNotEmpty &&
-        EraHatchConfig.firebaseProjectNumber.isNotEmpty) {
+        firebaseProject.isNotEmpty) {
       body['push_token'] = pushToken;
-      body['firebase_project_id'] = EraHatchConfig.firebaseProjectNumber;
+      body['firebase_project_id'] = firebaseProject;
     }
 
     if (Platform.isIOS) {
       try {
-        if (await AppTrackingTransparency.trackingAuthorizationStatus ==
-            TrackingStatus.authorized) {
+        final att = await AppTrackingTransparency.trackingAuthorizationStatus;
+        if (att == TrackingStatus.authorized) {
           final idfa = await AppTrackingTransparency.getAdvertisingIdentifier();
           if (idfa.isNotEmpty && !idfa.startsWith('00000000-')) {
             body['sub_id_10'] = idfa;
@@ -195,7 +210,7 @@ class FlightAttribution {
         }
       } catch (_) {}
     }
-    yfrTrace(() => '[YFR.FLIGHT] payload ${jsonEncode(body)}');
+    lbrTrace(() => '[LBR.FLIGHT] payload ${jsonEncode(body)}');
     return body;
   }
 

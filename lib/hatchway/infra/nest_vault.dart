@@ -3,30 +3,34 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/hatch_models.dart';
 
-class NestVault {
-  static const String _routeKey = 'yfr.rally.route';
-  static const String _expiryKey = 'yfr.rally.expiry';
-  static const String _inviteKey = 'yfr.rally.invite.after';
-  static const String _permissionKey = 'yfr.rally.push.allowed';
-  static const String _osDeniedKey = 'yfr.rally.push.os_denied';
-  static const String _savedUrlKey = 'yfr.rally.secure.destination';
-  static const String _pendingUrlKey = 'yfr.rally.secure.pending';
+/// Local persistence bag for the gray flow — the last routing decision,
+/// the cached target URL, push-permission state, and the one-shot push
+/// deep-link buffer. Keys are prefixed uniquely per project.
+class CoopSafe {
+  // Namespace prefix — never share with a sibling app.
+  static const String _routeKey = 'lbr.roost.route';
+  static const String _expiryKey = 'lbr.roost.expiry';
+  static const String _inviteKey = 'lbr.roost.invite.after';
+  static const String _grantedKey = 'lbr.roost.push.granted';
+  static const String _osBlockedKey = 'lbr.roost.push.os_blocked';
+  static const String _cachedUrlKey = 'lbr.roost.secure.dest';
+  static const String _pendingUrlKey = 'lbr.roost.secure.pending';
 
   final FlutterSecureStorage _secure = const FlutterSecureStorage();
-  late SharedPreferences _preferences;
+  late SharedPreferences _prefs;
 
   Future<void> initialize() async {
-    _preferences = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance();
   }
 
-  NestRoute get route => NestRoute.parse(_preferences.getString(_routeKey));
+  PortalRoute get route => PortalRoute.parse(_prefs.getString(_routeKey));
 
-  Future<void> saveRoute(NestRoute route) =>
-      _preferences.setString(_routeKey, route.storageValue);
+  Future<void> saveRoute(PortalRoute value) =>
+      _prefs.setString(_routeKey, value.storageValue);
 
   Future<String?> savedUrl() async {
     try {
-      return await _secure.read(key: _savedUrlKey);
+      return await _secure.read(key: _cachedUrlKey);
     } catch (_) {
       return null;
     }
@@ -34,23 +38,24 @@ class NestVault {
 
   Future<void> cacheUrl(String url, int? expiresAt) async {
     try {
-      await _secure.write(key: _savedUrlKey, value: url);
+      await _secure.write(key: _cachedUrlKey, value: url);
       if (expiresAt != null) {
-        await _preferences.setInt(_expiryKey, expiresAt);
+        await _prefs.setInt(_expiryKey, expiresAt);
       }
     } catch (_) {}
   }
 
   bool get cachedUrlExpired {
-    final expiry = _preferences.getInt(_expiryKey);
+    final expiry = _prefs.getInt(_expiryKey);
     return expiry == null ||
         DateTime.now().millisecondsSinceEpoch ~/ 1000 >= expiry;
   }
 
   Future<void> stashPushUrl(String url) async {
-    if (url.trim().isEmpty) return;
+    final trimmed = url.trim();
+    if (trimmed.isEmpty) return;
     try {
-      await _secure.write(key: _pendingUrlKey, value: url.trim());
+      await _secure.write(key: _pendingUrlKey, value: trimmed);
     } catch (_) {}
   }
 
@@ -64,21 +69,21 @@ class NestVault {
     }
   }
 
-  bool get pushAllowed => _preferences.getBool(_permissionKey) ?? false;
-  bool get pushDeniedByOs => _preferences.getBool(_osDeniedKey) ?? false;
+  bool get pushAllowed => _prefs.getBool(_grantedKey) ?? false;
+  bool get pushDeniedByOs => _prefs.getBool(_osBlockedKey) ?? false;
 
   Future<void> setPushAllowed(bool value) =>
-      _preferences.setBool(_permissionKey, value);
+      _prefs.setBool(_grantedKey, value);
 
-  Future<void> markPushDeniedByOs() => _preferences.setBool(_osDeniedKey, true);
+  Future<void> markPushDeniedByOs() => _prefs.setBool(_osBlockedKey, true);
 
   bool get shouldShowPushInvite {
     if (pushAllowed || pushDeniedByOs) return false;
-    final after = _preferences.getInt(_inviteKey);
+    final after = _prefs.getInt(_inviteKey);
     return after == null ||
         DateTime.now().millisecondsSinceEpoch ~/ 1000 >= after;
   }
 
   Future<void> snoozePushInvite(int epochSeconds) =>
-      _preferences.setInt(_inviteKey, epochSeconds);
+      _prefs.setInt(_inviteKey, epochSeconds);
 }

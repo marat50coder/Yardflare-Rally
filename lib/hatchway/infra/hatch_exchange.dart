@@ -6,21 +6,25 @@ import 'flight_attribution.dart';
 import 'nest_vault.dart';
 import 'roost_agent.dart';
 
-class HatchExchange {
-  HatchExchange(this._agent, this._vault);
+/// POSTs the composed attribution + device payload to the config endpoint
+/// and unpacks the response into a `RelayReply`. On success caches the
+/// returned URL to `CoopSafe` so a subsequent cold launch skips the whole
+/// pipeline (see the "Config Request Contract" in the docs).
+class SignalExchange {
+  SignalExchange(this._agent, this._safe);
 
-  final RoostAgent _agent;
-  final NestVault _vault;
+  final HerderAgent _agent;
+  final CoopSafe _safe;
 
-  Future<HatchReply> request(Map<String, dynamic> payload) async {
-    if (!EraHatchConfig.grayCredentialsReady) {
-      return HatchReply.rejected('credentials_unavailable');
+  Future<RelayReply> request(Map<String, dynamic> payload) async {
+    if (!LanternRallyEnv.grayCredentialsReady) {
+      return RelayReply.rejected('credentials_unavailable');
     }
     try {
-      yfrTrace(() => '[YFR.EXCHANGE] request ${jsonEncode(payload)}');
+      lbrTrace(() => '[LBR.EXCHANGE] request ${jsonEncode(payload)}');
       final response = await _agent
           .post(
-            Uri.parse(EraHatchConfig.endpoint),
+            Uri.parse(LanternRallyEnv.endpoint),
             headers: const <String, String>{
               'Accept': 'application/json',
               'Content-Type': 'application/json',
@@ -28,22 +32,23 @@ class HatchExchange {
             body: jsonEncode(payload),
           )
           .timeout(const Duration(seconds: 15));
-      yfrTrace(
-        () => '[YFR.EXCHANGE] response ${response.statusCode} ${response.body}',
+      lbrTrace(
+        () => '[LBR.EXCHANGE] response ${response.statusCode} '
+            '${response.body}',
       );
       if (response.statusCode != 200) {
-        return HatchReply.rejected('http_${response.statusCode}');
+        return RelayReply.rejected('http_${response.statusCode}');
       }
       final decoded = jsonDecode(response.body);
-      if (decoded is! Map) return HatchReply.rejected('invalid_response');
-      final reply = HatchReply.fromJson(Map<String, dynamic>.from(decoded));
+      if (decoded is! Map) return RelayReply.rejected('invalid_response');
+      final reply = RelayReply.fromJson(Map<String, dynamic>.from(decoded));
       if (reply.hasDestination) {
-        await _vault.cacheUrl(reply.url!, reply.expiresAt);
+        await _safe.cacheUrl(reply.url!, reply.expiresAt);
       }
       return reply;
     } catch (error) {
-      yfrTrace(() => '[YFR.EXCHANGE] failed: $error');
-      return HatchReply.rejected('network_failure');
+      lbrTrace(() => '[LBR.EXCHANGE] failed: $error');
+      return RelayReply.rejected('network_failure');
     }
   }
 }

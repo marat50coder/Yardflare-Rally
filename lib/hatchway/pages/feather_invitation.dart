@@ -5,33 +5,36 @@ import '../config/era_hatch_config.dart';
 import '../infra/egg_signal_hub.dart';
 import '../infra/nest_vault.dart';
 
-class FeatherInvitation extends StatefulWidget {
-  const FeatherInvitation({
+/// Push-permission opt-in shown once, right before the WebView is
+/// opened. Skipping snoozes the invite for `pushSnoozeSeconds`.
+class TorchInvitation extends StatefulWidget {
+  const TorchInvitation({
     super.key,
-    required this.vault,
-    required this.notifications,
+    required this.safe,
+    required this.torches,
     required this.nextBuilder,
     this.onTokenReady,
   });
 
-  final NestVault vault;
-  final EggSignalHub notifications;
+  final CoopSafe safe;
+  final TorchRelay torches;
   final WidgetBuilder nextBuilder;
   final Future<void> Function(String token)? onTokenReady;
 
   @override
-  State<FeatherInvitation> createState() => _FeatherInvitationState();
+  State<TorchInvitation> createState() => _TorchInvitationState();
 }
 
-class _FeatherInvitationState extends State<FeatherInvitation> {
-  bool _working = false;
+class _TorchInvitationState extends State<TorchInvitation> {
+  bool _busy = false;
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    // BootScreen locks portrait before routing here; the invite screen must
-    // re-enable landscape so it rotates with the device (matches WebView).
+    // BootScreen locks portrait right before routing here. The invite
+    // screen must re-enable landscape so it rotates with the device
+    // (matches the WebView shell).
     SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
       DeviceOrientation.portraitUp,
       DeviceOrientation.landscapeLeft,
@@ -40,47 +43,46 @@ class _FeatherInvitationState extends State<FeatherInvitation> {
   }
 
   Future<void> _accept() async {
-    if (_working) return;
-    setState(() => _working = true);
-    final granted = await widget.notifications.askPermission();
-    final token = widget.notifications.token;
+    if (_busy) return;
+    setState(() => _busy = true);
+    final granted = await widget.torches.askPermission();
+    final token = widget.torches.token;
     if (granted && token != null && token.isNotEmpty) {
       await widget.onTokenReady?.call(token);
     }
     if (!granted) await _snooze();
-    _continue();
+    _forward();
   }
 
   Future<void> _skip() async {
-    if (_working) return;
-    setState(() => _working = true);
+    if (_busy) return;
+    setState(() => _busy = true);
     await _snooze();
-    _continue();
+    _forward();
   }
 
   Future<void> _snooze() {
-    final until =
-        DateTime.now().millisecondsSinceEpoch ~/ 1000 +
-        EraHatchConfig.pushSnoozeSeconds;
-    return widget.vault.snoozePushInvite(until);
+    final until = DateTime.now().millisecondsSinceEpoch ~/ 1000 +
+        LanternRallyEnv.pushSnoozeSeconds;
+    return widget.safe.snoozePushInvite(until);
   }
 
-  void _continue() {
+  void _forward() {
     if (!mounted) return;
-    Navigator.of(
-      context,
-    ).pushReplacement(MaterialPageRoute<void>(builder: widget.nextBuilder));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(builder: widget.nextBuilder),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     final landscape = media.orientation == Orientation.landscape;
-    final background = landscape
+    final art = landscape
         ? 'assets/Horizontal_Notifications_Screen.webp'
         : 'assets/Vertical_Notifications_Screen.webp';
-    // Bigger, easy-to-hit buttons. Landscape: centred horizontally with NO
-    // safe-area so the notch never shifts the horizontal centre.
+    // Bigger, easy-to-hit buttons. Landscape: centred horizontally with
+    // NO safe area so the notch never shifts the horizontal centre.
     // Landscape (Horizontal_Notifications_Screen) buttons are 20% smaller.
     final width = landscape
         ? (media.size.width * 0.336).clamp(256.0, 448.0)
@@ -96,7 +98,7 @@ class _FeatherInvitationState extends State<FeatherInvitation> {
         fit: StackFit.expand,
         children: <Widget>[
           Image.asset(
-            background,
+            art,
             fit: BoxFit.cover,
             filterQuality: FilterQuality.high,
           ),
@@ -111,8 +113,8 @@ class _FeatherInvitationState extends State<FeatherInvitation> {
                   height: acceptH,
                   fontSize: acceptFont,
                   label: 'Accept',
-                  emphasized: true,
-                  busy: _working,
+                  emphasised: true,
+                  busy: _busy,
                   onTap: _accept,
                 ),
                 SizedBox(height: landscape ? 12 : 16),
@@ -121,7 +123,7 @@ class _FeatherInvitationState extends State<FeatherInvitation> {
                   height: skipH,
                   fontSize: skipFont,
                   label: 'Skip',
-                  emphasized: false,
+                  emphasised: false,
                   busy: false,
                   onTap: _skip,
                 ),
@@ -140,7 +142,7 @@ class _InviteButton extends StatelessWidget {
     required this.height,
     required this.fontSize,
     required this.label,
-    required this.emphasized,
+    required this.emphasised,
     required this.busy,
     required this.onTap,
   });
@@ -149,7 +151,7 @@ class _InviteButton extends StatelessWidget {
   final double height;
   final double fontSize;
   final String label;
-  final bool emphasized;
+  final bool emphasised;
   final bool busy;
   final VoidCallback onTap;
 
@@ -163,7 +165,7 @@ class _InviteButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
           gradient: LinearGradient(
-            colors: emphasized
+            colors: emphasised
                 ? const <Color>[Color(0xFFFFCF4A), Color(0xFFFF7D2C)]
                 : const <Color>[Color(0xFFFFA63D), Color(0xFFD94A2A)],
             begin: Alignment.topCenter,

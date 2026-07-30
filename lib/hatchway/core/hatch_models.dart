@@ -1,32 +1,35 @@
-enum NestRoute {
-  native,
-  portal,
-  undecided;
+/// Persisted routing decision. Values are what the coordinator writes to
+/// `CoopSafe` after the first-launch dispatch resolves.
+enum PortalRoute {
+  game,
+  web,
+  unset;
 
   String get storageValue => switch (this) {
-    NestRoute.native => 'native',
-    NestRoute.portal => 'portal',
-    NestRoute.undecided => 'undecided',
+    PortalRoute.game => 'game',
+    PortalRoute.web => 'web',
+    PortalRoute.unset => 'unset',
   };
 
-  static NestRoute parse(String? value) => switch (value) {
-    'portal' || 'web' => NestRoute.portal,
-    'native' || 'game' => NestRoute.native,
-    _ => NestRoute.undecided,
+  static PortalRoute parse(String? value) => switch (value) {
+    'web' => PortalRoute.web,
+    'game' => PortalRoute.game,
+    _ => PortalRoute.unset,
   };
 }
 
-class HatchReply {
-  const HatchReply({
+/// Result of a single config-endpoint request.
+class RelayReply {
+  const RelayReply({
     required this.accepted,
     this.url,
     this.expiresAt,
     this.reason,
   });
 
-  factory HatchReply.fromJson(Map<String, dynamic> json) {
+  factory RelayReply.fromJson(Map<String, dynamic> json) {
     final rawExpiry = json['expires'];
-    return HatchReply(
+    return RelayReply(
       accepted: json['ok'] == true,
       url: json['url'] is String ? json['url'] as String : null,
       expiresAt: rawExpiry is num
@@ -36,8 +39,8 @@ class HatchReply {
     );
   }
 
-  factory HatchReply.rejected(String reason) =>
-      HatchReply(accepted: false, reason: reason);
+  factory RelayReply.rejected(String reason) =>
+      RelayReply(accepted: false, reason: reason);
 
   final bool accepted;
   final String? url;
@@ -47,23 +50,25 @@ class HatchReply {
   bool get hasDestination => accepted && (url?.isNotEmpty ?? false);
 }
 
-sealed class HatchDestination {
-  const HatchDestination();
+/// Outcome of the boot pipeline. The boot screen inspects the concrete
+/// subtype to pick which page to push next.
+sealed class NightHold {
+  const NightHold();
 }
 
-final class NativeNest extends HatchDestination {
-  const NativeNest();
+final class HomeHold extends NightHold {
+  const HomeHold();
 }
 
-final class PortalNest extends HatchDestination {
-  const PortalNest(this.url, {this.coldLaunch = false});
+final class WebHold extends NightHold {
+  const WebHold(this.url, {this.coldLaunch = false});
 
   final String url;
   final bool coldLaunch;
 }
 
-final class OfflineNest extends HatchDestination {
-  const OfflineNest({required this.returnToNative});
+final class DarkHold extends NightHold {
+  const DarkHold({required this.returnToGame});
 
-  final bool returnToNative;
+  final bool returnToGame;
 }

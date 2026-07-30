@@ -11,202 +11,213 @@ import 'infra/launch_route_reader.dart';
 import 'infra/nest_vault.dart';
 import 'infra/roost_agent.dart';
 
-class HatchCoordinator {
-  HatchCoordinator({
-    required this.vault,
-    required this.probe,
-    required this.attribution,
-    required this.exchange,
-    required this.notifications,
+/// Orchestrates the boot pipeline: cold-start push → connectivity → APNs
+/// bootstrap → AppsFlyer wait → config POST → routing decision. Emits
+/// `NightHold` variants that the boot screen inspects to pick the next
+/// page.
+class WardenRouter {
+  WardenRouter({
+    required this.safe,
+    required this.scout,
+    required this.tracker,
+    required this.relay,
+    required this.torches,
     required this.agent,
     required this.runtimeEnabled,
   });
 
-  final NestVault vault;
-  final AirwayProbe probe;
-  final FlightAttribution attribution;
-  final HatchExchange exchange;
-  final EggSignalHub notifications;
-  final RoostAgent agent;
+  final CoopSafe safe;
+  final PastureScout scout;
+  final TrackerRelay tracker;
+  final SignalExchange relay;
+  final TorchRelay torches;
+  final HerderAgent agent;
   final bool runtimeEnabled;
 
-  bool get enabled => runtimeEnabled && EraHatchConfig.grayCredentialsReady;
+  bool get enabled =>
+      runtimeEnabled && LanternRallyEnv.grayCredentialsReady;
 
-  Future<HatchDestination>? _decideFuture;
+  Future<NightHold>? _pending;
 
-  /// De-duplicates only *concurrent* calls (the boot screen can build twice at
-  /// startup → avoids a double attribution / config POST). The cache is
-  /// cleared once the pipeline finishes, so a later call — e.g. Retry from the
-  /// offline screen after Wi-Fi returns — runs the whole pipeline again
-  /// instead of replaying the cached OfflineNest forever.
-  Future<HatchDestination> decide({
-    required void Function(double value) onProgress,
-  }) =>
-      _decideFuture ??= _decide(onProgress: onProgress)
-          .whenComplete(() => _decideFuture = null);
+  /// De-duplicates only *concurrent* calls (boot screen may build twice at
+  /// startup). The cache is cleared once the pipeline finishes so a later
+  /// retry from the offline screen re-runs the whole pipeline instead of
+  /// replaying a cached `DarkHold` forever.
+  Future<NightHold> decide({required void Function(double) onProgress}) =>
+      _pending ??= _resolve(onProgress: onProgress)
+          .whenComplete(() => _pending = null);
 
-  Future<HatchDestination> _decide({
-    required void Function(double value) onProgress,
-  }) async {
+  Future<NightHold> _resolve({required void Function(double) onProgress}) async {
     if (!enabled) {
       assert(() {
         // ignore: avoid_print
         print(
-          '[YFR.HATCH] gate disabled '
-          'runtime=$runtimeEnabled creds=${EraHatchConfig.grayCredentialsReady}',
+          '[LBR.WARD] gate disabled '
+          'runtime=$runtimeEnabled creds=${LanternRallyEnv.grayCredentialsReady}',
         );
         return true;
       }());
       onProgress(1);
-      return const NativeNest();
+      return const HomeHold();
     }
 
     assert(() {
       // ignore: avoid_print
-      print('[YFR.HATCH] decide start route=${vault.route}');
+      print('[LBR.WARD] resolve start route=${safe.route}');
       return true;
     }());
 
-    notifications.onTokenChanged = _refreshForToken;
-    final coldRoute = await LaunchRouteReader.consume();
-    if (coldRoute != null) {
-      await vault.saveRoute(NestRoute.portal);
-      await vault.consumePushUrl();
-      unawaited(_backgroundDispatch());
+    torches.onTokenChanged = _refreshWithToken;
+
+    // Cold-start push URL is consumed FIRST — before connectivity check,
+    // before attribution — otherwise a slow network hides the pushed URL
+    // behind an offline screen or the plain config URL.
+    final coldLink = await ColdLinkReader.consume();
+    if (coldLink != null) {
+      await safe.saveRoute(PortalRoute.web);
+      await safe.consumePushUrl();
+      unawaited(_dispatchInBackground());
       onProgress(1);
-      return PortalNest(coldRoute, coldLaunch: true);
+      return WebHold(coldLink, coldLaunch: true);
     }
 
     onProgress(0.12);
-    return switch (vault.route) {
-      NestRoute.undecided => _firstDecision(onProgress),
-      NestRoute.portal => _returningPortal(onProgress),
-      NestRoute.native => _returningNative(onProgress),
-    };
+    switch (safe.route) {
+      case PortalRoute.unset:
+        return _resolveFirstLaunch(onProgress);
+      case PortalRoute.web:
+        return _resolveReturningWeb(onProgress);
+      case PortalRoute.game:
+        return _resolveReturningGame(onProgress);
+    }
   }
 
-  Future<HatchDestination> _firstDecision(
+  Future<NightHold> _resolveFirstLaunch(
     void Function(double) progress,
   ) async {
-    if (!await probe.hasInterface()) {
+    if (!await scout.hasInterface()) {
       assert(() {
         // ignore: avoid_print
-        print('[YFR.HATCH] first: no interface → offline');
+        print('[LBR.WARD] first: no interface → offline');
         return true;
       }());
-      return const OfflineNest(returnToNative: false);
+      return const DarkHold(returnToGame: false);
     }
     progress(0.28);
     try {
-      await notifications.boot();
-    } catch (_) {}
-    if (!await probe.canReachNetwork()) {
+      await torches.boot();
+    } catch (_) {
+      // Push bootstrap failures never block the gate.
+    }
+    if (!await scout.canReachNetwork()) {
       assert(() {
         // ignore: avoid_print
-        print('[YFR.HATCH] first: DNS probe failed → offline');
+        print('[LBR.WARD] first: dns probe failed → offline');
         return true;
       }());
-      return const OfflineNest(returnToNative: false);
+      return const DarkHold(returnToGame: false);
     }
     progress(0.48);
-    await attribution.awaitSignals();
+    await tracker.awaitSignals();
     progress(0.72);
-    final reply = await _requestConfig();
+    final reply = await _askConfig();
     progress(1);
     assert(() {
       // ignore: avoid_print
       print(
-        '[YFR.HATCH] first: config hasDest=${reply.hasDestination} '
+        '[LBR.WARD] first: config hasDest=${reply.hasDestination} '
         'url=${reply.url}',
       );
       return true;
     }());
     if (reply.hasDestination) {
-      await vault.saveRoute(NestRoute.portal);
-      return PortalNest(reply.url!);
+      await safe.saveRoute(PortalRoute.web);
+      return WebHold(reply.url!);
     }
-    await vault.saveRoute(NestRoute.native);
-    return const NativeNest();
+    await safe.saveRoute(PortalRoute.game);
+    return const HomeHold();
   }
 
-  Future<HatchDestination> _returningPortal(
+  Future<NightHold> _resolveReturningWeb(
     void Function(double) progress,
   ) async {
-    if (!await probe.hasInterface()) {
-      return const OfflineNest(returnToNative: false);
+    if (!await scout.hasInterface()) {
+      return const DarkHold(returnToGame: false);
     }
-    final pending = await vault.consumePushUrl();
+    // Pending push URL takes precedence — a tap that landed while the app
+    // was already alive should still steer the returning session.
+    final pending = await safe.consumePushUrl();
     if (pending != null && pending.isNotEmpty) {
       progress(1);
-      return PortalNest(pending);
+      return WebHold(pending);
     }
-    final cached = await vault.savedUrl();
-    if (cached != null && !vault.cachedUrlExpired) {
+    final cached = await safe.savedUrl();
+    if (cached != null && !safe.cachedUrlExpired) {
       progress(1);
-      return PortalNest(cached);
+      return WebHold(cached);
     }
 
     await Future.wait<void>(<Future<void>>[
-      notifications.boot(),
-      attribution.start(),
+      torches.boot(),
+      tracker.start(),
     ]);
-    if (!await probe.canReachNetwork()) {
-      return const OfflineNest(returnToNative: false);
+    if (!await scout.canReachNetwork()) {
+      return const DarkHold(returnToGame: false);
     }
     progress(0.62);
-    await attribution.awaitSignals(installTimeout: const Duration(seconds: 5));
-    final reply = await _requestConfig();
+    await tracker.awaitSignals(installTimeout: const Duration(seconds: 5));
+    final reply = await _askConfig();
     progress(1);
-    if (reply.hasDestination) return PortalNest(reply.url!);
-    if (cached != null) return PortalNest(cached);
-    return const OfflineNest(returnToNative: false);
+    if (reply.hasDestination) return WebHold(reply.url!);
+    if (cached != null) return WebHold(cached);
+    return const DarkHold(returnToGame: false);
   }
 
-  Future<HatchDestination> _returningNative(
+  Future<NightHold> _resolveReturningGame(
     void Function(double) progress,
   ) async {
-    if (!await probe.hasInterface()) {
+    if (!await scout.hasInterface()) {
       progress(1);
-      return const NativeNest();
+      return const HomeHold();
     }
     await Future.wait<void>(<Future<void>>[
-      notifications.boot(),
-      attribution.start(),
+      torches.boot(),
+      tracker.start(),
     ]);
-    if (!await probe.canReachNetwork()) {
+    if (!await scout.canReachNetwork()) {
       progress(1);
-      return const NativeNest();
+      return const HomeHold();
     }
     progress(0.55);
-    await attribution.awaitSignals();
-    final reply = await _requestConfig();
+    await tracker.awaitSignals();
+    final reply = await _askConfig();
     progress(1);
-    if (!reply.hasDestination) return const NativeNest();
-    await vault.saveRoute(NestRoute.portal);
-    return PortalNest(reply.url!);
+    if (!reply.hasDestination) return const HomeHold();
+    await safe.saveRoute(PortalRoute.web);
+    return WebHold(reply.url!);
   }
 
-  Future<HatchReply> _requestConfig({String? token}) async {
-    final body = await attribution.compose(
+  Future<RelayReply> _askConfig({String? token}) async {
+    final body = await tracker.compose(
       locale: Platform.localeName.replaceAll('-', '_'),
-      pushToken: token ?? notifications.token,
+      pushToken: token ?? torches.token,
     );
-    return exchange.request(body);
+    return relay.request(body);
   }
 
-  Future<void> _backgroundDispatch() async {
+  Future<void> _dispatchInBackground() async {
     try {
       await Future.wait<void>(<Future<void>>[
-        notifications.boot(),
-        attribution.awaitSignals(),
+        torches.boot(),
+        tracker.awaitSignals(),
       ]);
-      await _requestConfig();
+      await _askConfig();
     } catch (_) {}
   }
 
-  Future<void> _refreshForToken(String token) async {
+  Future<void> _refreshWithToken(String token) async {
     try {
-      await _requestConfig(token: token);
+      await _askConfig(token: token);
     } catch (_) {}
   }
 }
